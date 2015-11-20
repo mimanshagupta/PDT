@@ -1,0 +1,54 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{project.name}}</h2>
+
+<h4>Inception</h4>
+    <ul>
+        {% for inc_itr in inception %}
+            <li>
+                <a href="/project/iteration/{{inc_itr.iterid}}">
+                    Iteration{{inc_itr.iternumber}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<p>&nbsp;</p>
+<h4>Elaboration</h4>
+    <ul>
+        {% for elab_itr in elaboration %}
+            <li>
+                <a href="/project/iteration/{{elab_itr.iterid}}">
+                    Iteration{{elab_itr.iternumber}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<p>&nbsp;</p>
+<h4>Construction</h4>
+    <ul>
+        {% for con_itr in construction %}
+            <li>
+                <a href="/project/iteration/{{con_itr.iterid}}">
+                    Iteration{{con_itr.iternumber}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<p>&nbsp;</p>
+<h4>Transition</h4>
+    <ul>
+        {% for tran_itr in transition %}
+            <li>
+                <a href="/project/iteration/{{tran_itr.iterid}}">
+                    Iteration{{tran_itr.iternumber}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+   <a class="btn btn-default" href="/developer/{{project.developerid}}">Back</a>
+
+{% endblock %}

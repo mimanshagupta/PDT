@@ -1,0 +1,57 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{project.name}}</h2>
+
+Developers:
+<ul>
+    {% for inc_itr in inception %}
+        <li>
+            <a href="">
+                Iteration{{inc_itr.iternumber}}
+            </a>
+         </li>
+        {% endfor %}
+</ul>
+Total SLOC:
+Total time cost:
+
+<h4>Inception</h4>
+    <ul>
+        {% for inc_itr in inception %}
+            <li>
+                <a href="">
+                    Iteration{{inc_itr.iternumber}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<p>&nbsp;</p>
+<h4>Elaboration</h4>
+    <ul>
+        {% for elab_itr in elaboration %}
+            <li>
+                <a href="">
+                    Iteration{{elab_itr.iternumber}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<p>&nbsp;</p>
+<h4>Construction</h4>
+    <ul>
+        {% for con_itr in construction %}
+            <li>
+                <a href="">
+                    Iteration{{con_itr.iternumber}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<p>&nbsp;</p>
+<h4>Transition</h4>
+    <ul>
+        {% for tran_itr in transition %}
+            <li>
+              

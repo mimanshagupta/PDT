@@ -1,0 +1,20 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>Home</h2>
+<p>&nbsp;</p>
+<h3>Project List</h3>
+<a href="" align="right" class="btn btn-info">New Project</a>
+<p>&nbsp;</p>
+<ul>
+    {% for project in projectlist %}
+        <li>
+            <a href="/project/analysis/{{project.pid}}">
+                {{project.name}}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
