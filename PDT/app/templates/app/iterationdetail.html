@@ -1,0 +1,22 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>Iteration {{itr.iternumber}} Detail</h2>
+<p>&nbsp;</p>
+Phrase: {{itr.phrase}} <br>
+Time cost: {{itr.timecost}} <br>
+Last access: {{itr.lastend}} <br>
+SLOC: {{itr.sloc}}<br>
+
+<p>&nbsp;</p>
+    <form method="post">
+        {% csrf_token %}
+        SLOC: {{form.sloc}}
+        <button type="submit">Save</button>
+    </form>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+   <a class="btn btn-default" href="/project/analysis/{{itr.projectid}}">Back</a>
+{% endblock %}

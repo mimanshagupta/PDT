@@ -1,0 +1,68 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{project.name}}</h2>
+Project ID: {{project.pid}} <br>
+No. of Developers: {{developerno}}<br>
+Developers:
+<ul>
+    {% for developer in developers %}
+        <li>
+            {{developer.name}}
+        </li>
+        {% endfor %}
+</ul>
+Total Delivered SLOC: {{slocsum}} <br>
+Total time cost: {{project.totaltime}} <br>
+<p>&nbsp;</p>
+<a href="/manager/iteration/create" align="right" class="btn btn-info">New Iteration</a>
+<p>&nbsp;</p>
+<h4>Inception</h4>
+    <ul>
+        {% for inc_itr in inception %}
+            <li>
+                <a href="/manager/iteration/{{inc_itr.iterid}}">
+                    Iteration{{inc_itr.iternumber}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<p>&nbsp;</p>
+<h4>Elaboration</h4>
+    <ul>
+        {% for elab_itr in elaboration %}
+            <li>
+                <a href="/manager/iteration/{{elab_itr.iterid}}">
+                    Iteration{{elab_itr.iternumber}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<p>&nbsp;</p>
+<h4>Construction</h4>
+    <ul>
+        {% for con_itr in construction %}
+            <li>
+                <a href="/manager/iteration/{{con_itr.iterid}}">
+                    Iteration{{con_itr.iternumber}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<p>&nbsp;</p>
+<h4>Transition</h4>
+    <ul>
+        {% for tran_itr in transition %}
+            <li>
+                <a href="/manager/iteration/{{tran_itr.iterid}}">
+                    Iteration{{tran_itr.iternumber}}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+   <a class="btn btn-default" href="/manager">Back</a>
+
+{% endblock %}

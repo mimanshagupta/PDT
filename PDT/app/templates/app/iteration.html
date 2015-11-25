@@ -1,0 +1,15 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+    <h2>{{project.name}} - {{iteration.phrase}} Iteration {{iteration.iternumber}}</h2>
+    <h3>Click to start timer for this iteration</h3>
+    Time used: {{displayhour}} hours {{displaymin}} minutes {{displaysec}} seconds<br>
+    <p>&nbsp;</p>
+    <a class="btn btn-danger" href="/project/iteration/{{iteration.iterid}}/starttimer">Start Timer</a><br>
+    WARNING: DO NOT use timer at 12:00 midnight
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>  
+    <a class="btn btn-default" href="/project/{{project.pid}}">Back</a>
+
+{% endblock %}
