@@ -1,0 +1,17 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>Home</h2>
+<h3>Projects</h3>
+<ul>
+    {% for project in projects %}
+        <li>
+            <a href="/project/{{project.pid}}">
+                {{project.name}}
+            </a>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

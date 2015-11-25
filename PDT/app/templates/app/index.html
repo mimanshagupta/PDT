@@ -1,0 +1,25 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h1>Project Data Tracker</h1>
+    <p class="lead">For the developers of the organization who want to evaluate their personal progress, productivity and quality of code in a software development project, the Project Data Tracker is a web application that will accept parameters to calculate, track and display performance of the developer in terms of size and quality of code written.</p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Project Manager</h2>
+        <p>
+            Exert control over development process and employee evaluation with an easy-to-use User Interface
+        </p>
+        <p><a class="btn btn-default" href="/manager">Login as Project Manager &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Developers</h2>
+        <p>Improve own productivity by monitoring self-progress. </p>
+        <p><a class="btn btn-default" href="/developers">Login as Developers &raquo;</a></p>
+    </div>
+</div>
+
+{% endblock %}
