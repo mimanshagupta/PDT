@@ -19,6 +19,9 @@ class Project(models.Model):
     pid = models.AutoField("Project ID", primary_key=True)
     name = models.CharField("Project Name", max_length=200)
     developers = models.ManyToManyField(Developer)
+    phase = models.IntegerField(default=0)
+    iterations = models.IntegerField(default=0)
+    expectedsloc = models.IntegerField(default=0)
     totaltime = models.PositiveIntegerField(null=True)
     totalsloc = models.PositiveIntegerField(null=True)
 
@@ -45,7 +48,7 @@ class Defect(models.Model):
 class ProjectForm(forms.ModelForm):
     class Meta:
         model=Project
-        fields = ['name']
+        fields = ['name' ,'developers','phase', 'iterations', 'expectedsloc']
 
 class IterationForm(forms.ModelForm):
     class Meta:

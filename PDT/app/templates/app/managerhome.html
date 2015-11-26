@@ -4,17 +4,68 @@
 
 <h2>Home</h2>
 <p>&nbsp;</p>
-<h3>Project List</h3>
-<a href="/manager/create" align="right" class="btn btn-info">New Project</a>
-<p>&nbsp;</p>
-<ul>
-    {% for project in projectlist %}
-        <li>
-            <a href="/project/analysis/{{project.pid}}">
-                {{project.name}}
-            </a>
-        </li>
-    {% endfor %}
-</ul>
+
+<div class = "col-md-12">
+	<div class = "row">
+		<h3>Project List</h3>
+		<p>&nbsp;</p>
+		<table class = "table table-striped">
+			<thead>
+			<tr>
+				<th>Project Name</th>
+				<th>Project ID</th>
+				<th>View Metrics</th>
+				<th>Edit</th>
+				<th>Record Metrics</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for project in projectlist %}
+			<tr>
+				<td>
+					<a href="/project/analysis/{{project.pid}}">
+					{{project.name}}
+					</a>
+				</td>
+
+				<td>
+					{{project.pid}}
+				</td>
+
+				<td>
+					<a href="/manager/create" align="right" class="btn btn-info">
+		View Metrics</a>
+				</td>
+
+				<td>
+					<a href="/manager/create" align="right" class="btn btn-danger">
+		Edit Config</a>
+				</td>
+
+				<td>
+					<a href="/manager/create" align="right" class="btn btn-warning">
+		Record Metrics</a>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+
+	</div>
+</div>
+
+<br><br>
+
+<div class = "col-md-12">
+	<div class="row">
+		<a href="/manager/create" align="right" class="btn btn-success">
+		Create New Project</a>
+	</div>
+	<br>
+	<div class="row">
+		
+	</div>
+
+</div> <br> <br>
 
 {% endblock %}
