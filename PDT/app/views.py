@@ -40,13 +40,17 @@ def createproject(request):
         form.save()
         return HttpResponseRedirect('/manager')
 
-def createiteration(request):
+def createiteration(request,pid):
     if request.method == 'GET':
         form = IterationForm()
         return render(request, 'app/create.html', {'form': form})
     elif request.method == 'POST':
         form = IterationForm(request.POST)
-        form.save()
+        if form.is_valid():
+            iteration = Iteration(iternumber=form.cleaned_data['iternumber'], phrase = form.cleaned_data['phrase'], projectid = form.cleaned_data['projectid'])
+            iteration.save()
+            return HttpResponseRedirect('/manager')
+
         return HttpResponseRedirect('/project/analysis/%s' %pid)
 
 def itrdetail(request, iterid):
