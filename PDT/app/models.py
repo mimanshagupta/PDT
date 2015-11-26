@@ -15,7 +15,7 @@ class Developer(models.Model):
     workerid = models.AutoField("Developer ID", primary_key=True)
     name = models.CharField("Developer Name", max_length=50)
 
-    def __str__(self):
+    def __str__(self):             
         return self.name
 
 class Project(models.Model):
@@ -30,9 +30,9 @@ class Project(models.Model):
 
 class Iteration(models.Model):
     iterid = models.AutoField(primary_key=True)
-    iternumber = models.PositiveIntegerField("Iteration no")
+    iternumber = models.PositiveIntegerField("Iteration no.")
     timecost = models.PositiveIntegerField(default=0)
-    phrase = models.CharField("Phrase", max_length=50)
+    phrase = models.CharField("Phase", max_length=50)
     projectid = models.PositiveIntegerField("Project ID", null=True)
     laststart = models.TimeField(blank=True, null=True)
     lastend = models.TimeField(blank=True, null=True)

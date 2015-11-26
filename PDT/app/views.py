@@ -72,12 +72,15 @@ def projectanalysis(request, pid):
     developers = project.developers.all()
     developerno = project.developers.count()
     slocsum = Iteration.objects.filter(projectid = pid).aggregate(Sum("sloc"))
+    expectedsloc = project.expectedsloc
+    phase = project.phase
 
     inception = Iteration.objects.filter(projectid=pid,phrase='inception')
     elaboration = Iteration.objects.filter(projectid=pid,phrase='elaboration')
     construction = Iteration.objects.filter(projectid=pid,phrase='construction')
     translation = Iteration.objects.filter(projectid=pid,phrase='translation')
-    return render_to_response('app/projectanalysis.html',{'project':project, 'slocsum':slocsum, 'developerno':developerno, 'developers':developers, 'inception':inception, 'elaboration':elaboration, 'construction':construction, 'translation':translation},
+
+    return render_to_response('app/projectanalysis.html',{'project':project, 'slocsum':slocsum, 'developerno':developerno, 'developers':developers, 'expectedsloc':expectedsloc, 'phase':phase ,'inception':inception, 'elaboration':elaboration, 'construction':construction, 'translation':translation},
                               context_instance = RequestContext(request,
         {
             'title':'Analysis',

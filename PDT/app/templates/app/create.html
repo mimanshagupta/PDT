@@ -5,10 +5,15 @@
 <h2>Create</h2>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
-    <form method="post">
+    <form method="post" role = "form" class="form-horizontal">
+    	<div class = "form-group">
         {% csrf_token %}
-        {{form}}
-        <button type="submit">Save</button>
+        {{form.as_ul}}
+    </div>
+
+
+        <br><br>
+        <button type="submit" class = "btn btn-success">Save</button>
     </form>
 
 {% endblock %}
