@@ -24,7 +24,7 @@ def home(request):
 
 def managerhome(request):
     projectlist = Project.objects.all()
-    return render_to_response('app/managerhome.html', {'projectlist': projectlist}, 
+    return render_to_response('app/managerhome.html', {'projectlist': projectlist},
                               context_instance = RequestContext(request,
         {
             'title':'Home',
@@ -53,7 +53,7 @@ def itrdetail(request, iterid):
     itr = Iteration.objects.get(pk=iterid)
     if request.method == 'GET':
         form = SLOCForm()
-        return render_to_response('app/iterationdetail.html',{'itr': itr, 'form': form}, 
+        return render_to_response('app/iterationdetail.html',{'itr': itr, 'form': form},
                               context_instance = RequestContext(request,
         {
             'title':'Iteration Detail',
@@ -77,17 +77,37 @@ def projectanalysis(request, pid):
     elaboration = Iteration.objects.filter(projectid=pid,phrase='elaboration')
     construction = Iteration.objects.filter(projectid=pid,phrase='construction')
     translation = Iteration.objects.filter(projectid=pid,phrase='translation')
-    return render_to_response('app/projectanalysis.html',{'project':project, 'slocsum':slocsum, 'developerno':developerno, 'developers':developers, 'inception':inception, 'elaboration':elaboration, 'construction':construction, 'translation':translation}, 
+    return render_to_response('app/projectanalysis.html',{'project':project, 'slocsum':slocsum, 'developerno':developerno, 'developers':developers, 'inception':inception, 'elaboration':elaboration, 'construction':construction, 'translation':translation},
                               context_instance = RequestContext(request,
         {
             'title':'Analysis',
             'year':datetime.now().year
         }))
 
+def editproject(request, pid):
+    project = Project.objects.get(pk=pid)
+    developers = project.developers.all()
+    if request.method == 'GET':
+        return render_to_response('app/editproject.html',{'project':project, 'developers':developers},
+                              context_instance = RequestContext(request,
+        {
+            'title':'Edit',
+            'year':datetime.now().year
+        }))
+    elif request.method == 'POST':
+        form = EditProjectForm(request.POST)
+        if form.is_valid():
+            project = Project.objects.get(pk=pid)
+            project.name = form.cleaned_data['name']
+            project.phase = form.cleaned_data['phase']
+            project.iterations = form.cleaned_data['iterations']
+            project.expectedsloc = form.cleaned_data['expectedsloc']
+            project.save()
+        return HttpResponseRedirect('/manager')
 
 def developers(request):
     developers = Developer.objects.all()
-    return render_to_response('app/developerlist.html',{'developers':developers}, 
+    return render_to_response('app/developerlist.html',{'developers':developers},
                               context_instance = RequestContext(request,
         {
             'title':'Login',
@@ -96,7 +116,7 @@ def developers(request):
 
 def developerhome(request, workerid):
     projects = Project.objects.filter(developers__workerid=workerid)
-    return render_to_response('app/developerhome.html',{'projects':projects}, 
+    return render_to_response('app/developerhome.html',{'projects':projects},
                               context_instance = RequestContext(request,
         {
             'title':'Home',
@@ -111,7 +131,7 @@ def projectdetail(request, pid):
     translation = Iteration.objects.filter(projectid=pid,phrase='translation')
     if request.method == 'GET':
         form = DefectForm()
-        return render_to_response('app/projectdetail.html',{'form':form, 'project':project, 'inception':inception, 'elaboration':elaboration, 'construction':construction, 'translation':translation}, 
+        return render_to_response('app/projectdetail.html',{'form':form, 'project':project, 'inception':inception, 'elaboration':elaboration, 'construction':construction, 'translation':translation},
                               context_instance = RequestContext(request,
         {
             'title':'Phrases and Iterations',

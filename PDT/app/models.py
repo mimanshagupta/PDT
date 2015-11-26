@@ -15,6 +15,9 @@ class Developer(models.Model):
     workerid = models.AutoField("Developer ID", primary_key=True)
     name = models.CharField("Developer Name", max_length=50)
 
+    def __str__(self):
+        return self.name
+
 class Project(models.Model):
     pid = models.AutoField("Project ID", primary_key=True)
     name = models.CharField("Project Name", max_length=200)
@@ -43,7 +46,7 @@ class Defect(models.Model):
     timecost = models.PositiveIntegerField(default=0)
     laststart = models.TimeField(blank=True, null=True)
     lastend = models.TimeField(blank=True, null=True)
-    
+
 #Model Forms
 class ProjectForm(forms.ModelForm):
     class Meta:
@@ -62,3 +65,9 @@ class DefectForm(forms.Form):
     founditer = forms.IntegerField();
     removediter = forms.IntegerField();
     description = forms.CharField();
+
+class EditProjectForm(forms.Form):
+    name = forms.CharField();
+    phase = forms.IntegerField();
+    iterations = forms.IntegerField();
+    expectedsloc = forms.IntegerField();

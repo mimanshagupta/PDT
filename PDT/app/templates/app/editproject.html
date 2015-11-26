@@ -1,0 +1,33 @@
+﻿{% extends "app/layout.html" %}
+
+
+{% block content %}
+
+<h2>Edit Project</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="name" class="control-label">Project Name: </label>
+    <input id="name" type="text" name="name" value="{{project.name}}"> <br><br>
+
+    <label for="id_developers" class="control-label">Developers: </label>
+    <select multiple="multiple" id="id_developers" name="developers">
+        {% for developer in developers %}
+        <option value="{{developer.workerid}}">{{developer.name}}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="phase" class="control-label">Number of Phases: </label>
+    <input id="phase" type="number" name="phase" value="{{project.phase}}"> <br><br>
+
+    <label for="iterations" class="control-label">Number of Iterations: </label>
+    <input id="iterations" type="number" name="iterations" value="{{project.iterations}}"> <br><br>
+
+    <label for="expectedsloc" class="control-label">Expected SLOC: </label>
+    <input id="expectedsloc" type="number" name="expectedsloc" value="{{project.expectedsloc}}"> <br><br>
+
+    <button class="btn btn-success">Save</button>
+</form>
+
+
+{% endblock %}
