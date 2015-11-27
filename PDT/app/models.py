@@ -15,7 +15,7 @@ class Developer(models.Model):
     workerid = models.AutoField("Developer ID", primary_key=True)
     name = models.CharField("Developer Name", max_length=50)
 
-    def __str__(self):             
+    def __str__(self):
         return self.name
 
 class Project(models.Model):

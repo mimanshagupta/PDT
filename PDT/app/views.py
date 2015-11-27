@@ -190,11 +190,11 @@ def enditimer(request, iterid):
     end = datetime.now()
     start = iteration.laststart
     hour = end.hour - start.hour
-    min = end.minute - start.minute
+    minute = end.minute - start.minute
     sec = end.second - start.second
     iteration.lastend = end
-    iteration.timecost += hour*3600 + min*60 + sec
-    project.totaltime += hour*3600 + min*60 + sec
+    iteration.timecost += hour*3600 + minute*60 + sec
+    project.totaltime += hour*3600 + minute*60 + sec
     iteration.save()
     project.save()
     return HttpResponseRedirect('/project/iteration/%s' % iterid)
