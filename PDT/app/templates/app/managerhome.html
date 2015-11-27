@@ -23,9 +23,7 @@
 			{% for project in projectlist %}
 			<tr>
 				<td>
-					<a href="/project/analysis/{{project.pid}}">
 					{{project.name}}
-					</a>
 				</td>
 
 				<td>
@@ -33,17 +31,17 @@
 				</td>
 
 				<td>
-					<a href="/manager/create" align="right" class="btn btn-info">
+					<a href="/project/analysis/{{project.pid}}" align="right" class="btn btn-info">
 		View Metrics</a>
 				</td>
 
 				<td>
-					<a href="/project/edit/{{project.pid}}" align="right" class="btn btn-danger">
+					<a href="/project/edit/{{project.pid}}" align="right" class="btn btn-warning">
 		Edit Config</a>
 				</td>
 
 				<td>
-					<a href="/manager/create" align="right" class="btn btn-warning">
+					<a href="/manager/create" align="right" class="btn btn-danger">
 		Record Metrics</a>
 				</td>
 			</tr>
