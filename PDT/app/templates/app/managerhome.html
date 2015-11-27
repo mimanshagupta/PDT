@@ -23,9 +23,7 @@
 			{% for project in projectlist %}
 			<tr>
 				<td>
-					<a href="/project/analysis/{{project.pid}}">
 					{{project.name}}
-					</a>
 				</td>
 
 				<td>
@@ -38,7 +36,7 @@
 				</td>
 
 				<td>
-					<a href="/project/edit/{{project.pid}}" align="right" class="btn btn-danger">
+					<a href="/project/edit/{{project.pid}}" align="right" class="btn btn-warning">
 		Edit Config</a>
 				</td>
 

@@ -49,7 +49,7 @@ def createiteration(request,pid):
         if form.is_valid():
             iteration = Iteration(iternumber=form.cleaned_data['iternumber'], phrase = form.cleaned_data['phrase'], projectid = form.cleaned_data['projectid'])
             iteration.save()
-            return HttpResponseRedirect('/manager')
+            return HttpResponseRedirect('/project/analysis/%s' %pid)
 
         return HttpResponseRedirect('/project/analysis/%s' %pid)
 
