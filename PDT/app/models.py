@@ -32,7 +32,7 @@ class Iteration(models.Model):
     iterid = models.AutoField(primary_key=True)
     iternumber = models.PositiveIntegerField("Iteration no.")
     timecost = models.PositiveIntegerField(default=0)
-    phrase = models.CharField("Phase", max_length=50)
+    phrase = models.CharField("Phase (Please enter as \"inception\", \"elaboration\", \"construction\", \"transition\")", max_length=50)
     projectid = models.PositiveIntegerField("Project ID", null=True)
     laststart = models.TimeField(blank=True, null=True)
     lastend = models.TimeField(blank=True, null=True)
