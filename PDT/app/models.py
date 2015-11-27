@@ -25,8 +25,8 @@ class Project(models.Model):
     phase = models.IntegerField(default=0)
     iterations = models.IntegerField(default=0)
     expectedsloc = models.IntegerField(default=0)
-    totaltime = models.PositiveIntegerField(null=True)
-    totalsloc = models.PositiveIntegerField(null=True)
+    totaltime = models.PositiveIntegerField(default=0)
+    totalsloc = models.PositiveIntegerField(default=0)
 
 class Iteration(models.Model):
     iterid = models.AutoField(primary_key=True)
