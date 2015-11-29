@@ -22,11 +22,34 @@ class Project(models.Model):
     pid = models.AutoField("Project ID", primary_key=True)
     name = models.CharField("Project Name", max_length=200)
     developers = models.ManyToManyField(Developer)
-    phase = models.IntegerField(default=0)
+    phase = models.PositiveIntegerField(default=0)
     iterations = models.IntegerField(default=0)
     expectedsloc = models.IntegerField(default=0)
+    expectedduration = models.IntegerField(default=0)
     totaltime = models.PositiveIntegerField(default=0)
     totalsloc = models.PositiveIntegerField(default=0)
+
+
+class Phase(models.Model):
+    phaseid = models.AutoField(primary_key=True)
+    projectid = models.PositiveIntegerField("Project ID", null=True)
+    PHASE_CHOICES = (
+    ('inception', 'inception'),
+    ('elaboration', 'elaboration'),
+    ('construction', 'construction'),
+    ('transition', 'transition'),
+    )
+    phase_name = models.CharField("Phase Name", choices=PHASE_CHOICES, max_length=200)
+
+    def getphaseeffort(self):
+        project = Project.objects.get(pk=self.projectid)
+        iterations = Iteration.objects.filter(projectid=self.projectid,phrase=self.phase_name)
+        phase_effort = 0
+        for iteration in iterations:
+            phase_effort = phase_effort + ((iteration.timecost/2592000) * project.developers.count())
+
+        return (phase_effort / project.expectedduration) * 100
+
 
 class Iteration(models.Model):
     iterid = models.AutoField(primary_key=True)
@@ -37,6 +60,22 @@ class Iteration(models.Model):
     laststart = models.TimeField(blank=True, null=True)
     lastend = models.TimeField(blank=True, null=True)
     sloc = models.IntegerField(default=0)
+
+    def getpercentsloc(self):
+        project = Project.objects.get(pk=self.projectid)
+        return (self.sloc / project.expectedsloc) * 100
+
+    def geteffort(self):
+        project = Project.objects.get(pk=self.projectid)
+        return (((self.timecost/2592000) * project.developers.count())/project.expectedduration) * 100
+
+    def getdeliveredsloc(self):
+        project = Project.objects.get(pk=self.projectid)
+        if self.timecost == 0:
+            return 0
+        else:
+            return self.sloc / ((self.timecost/2592000) * project.developers.count())
+
 
 class Defect(models.Model):
     defid = models.AutoField(primary_key=True)
@@ -51,7 +90,7 @@ class Defect(models.Model):
 class ProjectForm(forms.ModelForm):
     class Meta:
         model=Project
-        fields = ['name' ,'developers','phase', 'iterations', 'expectedsloc']
+        fields = ['name' ,'developers','phase', 'iterations', 'expectedsloc', 'expectedduration']
 
 class IterationForm(forms.ModelForm):
     class Meta:

@@ -37,6 +37,21 @@ def createproject(request):
         return render(request, 'app/create.html', {'form': form})
     elif request.method == 'POST':
         form = ProjectForm(request.POST)
+        if form.is_valid():
+            numberofphases = form.cleaned_data['phase']
+            if numberofphases > 0:
+                phase = Phase(projectid = Project.objects.count() + 1 , phase_name = 'inception')
+                phase.save()
+            if numberofphases > 1:
+                phase = Phase(projectid = Project.objects.count() + 1 , phase_name = 'elaboration')
+                phase.save()
+            if numberofphases > 2:
+                phase = Phase(projectid = Project.objects.count() + 1 , phase_name = 'construction')
+                phase.save()
+            if numberofphases > 3:
+                phase = Phase(projectid = Project.objects.count() + 1 , phase_name = 'transition')
+                phase.save()
+
         form.save()
         return HttpResponseRedirect('/manager')
 
@@ -88,6 +103,33 @@ def projectanalysis(request, pid):
                               context_instance = RequestContext(request,
         {
             'title':'Analysis',
+            'year':datetime.now().year
+        }))
+
+def metrics(request, pid):
+    project = Project.objects.get(pk=pid)
+
+    developerno = project.developers.count()
+
+    slocsum = Iteration.objects.filter(projectid = pid).aggregate(Sum("sloc"))
+    expectedsloc = project.expectedsloc
+
+    inception_phase = Phase.objects.get(projectid=pid,phase_name='inception')
+    elaboration_phase = Phase.objects.get(projectid=pid,phase_name='elaboration')
+    construction_phase = Phase.objects.get(projectid=pid,phase_name='construction')
+    transition_phase = Phase.objects.get(projectid=pid,phase_name='transition')
+
+    inception = Iteration.objects.filter(projectid=pid,phrase='inception')
+    elaboration = Iteration.objects.filter(projectid=pid,phrase='elaboration')
+    construction = Iteration.objects.filter(projectid=pid,phrase='construction')
+    transition = Iteration.objects.filter(projectid=pid,phrase='transition')
+
+    #inception_sum = Iteration.objects.filter(projectid=pid,phrase='inception').aggregrate(Sum("sloc"))
+
+    return render_to_response('app/viewmetrics.html',{'project':project, 'slocsum':slocsum, 'developerno':developerno, 'expectedsloc':expectedsloc, 'inception':inception, 'elaboration':elaboration, 'construction':construction, 'transition':transition, 'inception_phase':inception_phase, 'elaboration_phase':elaboration_phase, 'construction_phase':construction_phase, 'transition_phase':transition_phase},
+                              context_instance = RequestContext(request,
+        {
+            'title':'Viewmetrics',
             'year':datetime.now().year
         }))
 

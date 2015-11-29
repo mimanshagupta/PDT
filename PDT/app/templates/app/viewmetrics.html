@@ -1,0 +1,63 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>View Metrics for Project {{project.name}}</h2>
+
+<h3> Phase: Inception </h3>
+
+{% for iteration in inception %}
+
+<h4> Percentage SLOC Delivered: {{iteration.getpercentsloc}} %</h4>
+<h4> Effort: {{iteration.geteffort}} %</h4>
+<h4> Delivered SLOC/person-month: {{iteration.getdeliveredsloc}}</h4>
+
+{% endfor %}
+<h4> Phase Effort: {{inception_phase.getphaseeffort}} %</h4>
+
+
+<h3> Phase: Elaboration </h3>
+
+{% for iteration in elaboration %}
+
+<h4> Percentage SLOC Delivered: {{iteration.getpercentsloc}} %</h4>
+<h4> Effort: {{iteration.geteffort}} %</h4>
+<h4> Delivered SLOC/person-month: {{iteration.getdeliveredsloc}}</h4>
+
+{% endfor %}
+
+<h3> Phase: Construction </h3>
+
+{% for iteration in construction %}
+
+<h4> Percentage SLOC Delivered: {{iteration.getpercentsloc}} %</h4>
+<h4> Effort: {{iteration.geteffort}} %</h4>
+<h4> Delivered SLOC/person-month: {{iteration.getdeliveredsloc}}</h4>
+
+{% endfor %}
+
+<h3> Phase: Transition </h3>
+
+{% for iteration in transition %}
+
+<h4> Percentage SLOC Delivered: {{iteration.getpercentsloc}} %</h4>
+<h4> Effort: {{iteration.geteffort}} %</h4>
+<h4> Delivered SLOC/person-month: {{iteration.getdeliveredsloc}}</h4>
+
+{% endfor %}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  function test(){
+    document.getElementById('mushu').innerHTML = document.getElementById('mushu').replace(/Hello/g, 'puchku');
+  }
+  function percentageOf(iteration_sloc, expected_sloc) {
+    return (iteration_sloc / expected_sloc) * 100;
+  }
+
+</script>
+
+{% endblock %}

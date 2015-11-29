@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     #manager pages
     url(r'^manager$', 'app.views.managerhome', name='managerhome'),
     url(r'^project/analysis/(?P<pid>\d+)$', 'app.views.projectanalysis', name='projectanalysis'),
+    url(r'^project/metrics/(?P<pid>\d+)$', 'app.views.metrics', name='projectmetrics'),
     url(r'^project/edit/(?P<pid>\d+)$', 'app.views.editproject', name='editproject'),
     url(r'^manager/create$', 'app.views.createproject', name='createproject'),
     url(r'^manager/iteration/create/(?P<pid>\d+)$', 'app.views.createiteration', name='createiteration'),
