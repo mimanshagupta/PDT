@@ -10,11 +10,18 @@ Last access: {{itr.lastend}} <br>
 SLOC: {{itr.sloc}}<br>
 
 <p>&nbsp;</p>
+{% if itr.status == True %}
     <form method="post">
         {% csrf_token %}
         SLOC: {{form.sloc}}
         <button type="submit">Save</button>
     </form>
+      <br>
+      <a href="/project/iteration/{{itr.iterid}}/enditeration" class = "btn btn-danger">End Iteration</a>
+
+    {% else %}
+      <h2>Iteration has ended</h2>
+    {% endif %}
 
 <p>&nbsp;</p>
 <p>&nbsp;</p>

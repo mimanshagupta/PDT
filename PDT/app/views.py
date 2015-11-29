@@ -97,9 +97,9 @@ def projectanalysis(request, pid):
     inception = Iteration.objects.filter(projectid=pid,phrase='inception')
     elaboration = Iteration.objects.filter(projectid=pid,phrase='elaboration')
     construction = Iteration.objects.filter(projectid=pid,phrase='construction')
-    translation = Iteration.objects.filter(projectid=pid,phrase='translation')
+    transition = Iteration.objects.filter(projectid=pid,phrase='transition')
 
-    return render_to_response('app/projectanalysis.html',{'project':project, 'slocsum':slocsum, 'developerno':developerno, 'developers':developers, 'expectedsloc':expectedsloc, 'phase':phase ,'inception':inception, 'elaboration':elaboration, 'construction':construction, 'translation':translation},
+    return render_to_response('app/projectanalysis.html',{'project':project, 'slocsum':slocsum, 'developerno':developerno, 'developers':developers, 'expectedsloc':expectedsloc, 'phase':phase ,'inception':inception, 'elaboration':elaboration, 'construction':construction, 'transition':transition},
                               context_instance = RequestContext(request,
         {
             'title':'Analysis',
@@ -177,10 +177,10 @@ def projectdetail(request, pid):
     inception = Iteration.objects.filter(projectid=pid,phrase='inception')
     elaboration = Iteration.objects.filter(projectid=pid,phrase='elaboration')
     construction = Iteration.objects.filter(projectid=pid,phrase='construction')
-    translation = Iteration.objects.filter(projectid=pid,phrase='translation')
+    transition = Iteration.objects.filter(projectid=pid,phrase='transition')
     if request.method == 'GET':
         form = DefectForm()
-        return render_to_response('app/projectdetail.html',{'form':form, 'project':project, 'inception':inception, 'elaboration':elaboration, 'construction':construction, 'translation':translation},
+        return render_to_response('app/projectdetail.html',{'form':form, 'project':project, 'inception':inception, 'elaboration':elaboration, 'construction':construction, 'transition':transition},
                               context_instance = RequestContext(request,
         {
             'title':'Phrases and Iterations',
@@ -189,11 +189,18 @@ def projectdetail(request, pid):
     elif request.method == 'POST':
         form = DefectForm(request.POST)
         if form.is_valid():
-            defect = Defect(description = form.cleaned_data['description'], founditer = form.cleaned_data['founditer'], removediter = form.cleaned_data['removediter'])
+            defect = Defect(description = form.cleaned_data['description'], resolved_by = form.cleaned_data['resolved_by'], removediter = form.cleaned_data['removediter'], defect_type = form.cleaned_data['defect_type'], removedphase = form.cleaned_data['removedphase'], injectedphase = form.cleaned_data['injectedphase'], injectediter = form.cleaned_data['injectediter'])
+            defect.projectid = pid
             defect.save()
             print(defect)
         return HttpResponseRedirect('/project/%s' %pid)
 
+def enditeration(request,iterid):
+    iteration = Iteration.objects.get(pk=iterid)
+    iteration.status = False
+    iteration.save()
+    print(iteration.projectid)
+    return HttpResponseRedirect('/project/analysis/%s' % iteration.projectid)
 
 def iterationpage(request, iterid):
     iteration = Iteration.objects.get(pk=iterid)
@@ -239,4 +246,34 @@ def enditimer(request, iterid):
     project.totaltime += hour*3600 + minute*60 + sec
     iteration.save()
     project.save()
+    return HttpResponseRedirect('/project/iteration/%s' % iterid)
+
+def defect_starttimer(request, iterid):
+    iteration = Iteration.objects.get(pk=iterid)
+    project = Project.objects.get(pk=iteration.projectid)
+    start = datetime.now()
+    iteration.defect_laststart = start
+    iteration.save()
+    return HttpResponseRedirect('/project/iteration/%s/defecttimer' % iterid)
+
+def defect_itertimer(request, iterid):
+    iteration = Iteration.objects.get(pk=iterid)
+    project = Project.objects.get(pk=iteration.projectid)
+    return render_to_response('app/defect_itertimer.html', {'iteration':iteration, 'project':project},
+                              context_instance = RequestContext(request,
+        {
+            'title':'Timer',
+            'year':datetime.now().year
+        }))
+
+def defect_endtimer(request, iterid):
+    iteration = Iteration.objects.get(pk=iterid)
+    end = datetime.now()
+    start = iteration.defect_laststart
+    hour = end.hour - start.hour
+    minute = end.minute - start.minute
+    sec = end.second - start.second
+    iteration.defect_lastend = end
+    iteration.defect_timecost += hour*3600 + minute*60 + sec
+    iteration.save()
     return HttpResponseRedirect('/project/iteration/%s' % iterid)

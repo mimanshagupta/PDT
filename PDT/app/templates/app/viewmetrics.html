@@ -3,61 +3,143 @@
 {% block content %}
 
 <h2>View Metrics for Project {{project.name}}</h2>
+<h4> Project Percentage SLOC Delivered: {{project.getprojectpercentsloc}} %</h4>
+<h4> Effort: {{project.getprojecteffort}} %</h4>
+<h4> Delivered SLOC/person-month: {{project.getprojectdeliveredsloc}}</h4>
+<br>
+<h4> Total Defects injected: {{project.getprojectdefectsinjected}}</h4>
+<h4> Total Defects removed: {{project.getprojectdefectsremoved}}</h4>
+<br>
+<h4> Defect injection rate per development hour: {{project.getinjectionrate}}</h4>
+<h4> Defect removal rate per development hour: {{project.getremovalrate}}</h4>
+<hr>
 
 <h3> Phase: Inception </h3>
-
 {% for iteration in inception %}
+
+<h3> iteration {{iteration.iternumber}} </h3>
 
 <h4> Percentage SLOC Delivered: {{iteration.getpercentsloc}} %</h4>
 <h4> Effort: {{iteration.geteffort}} %</h4>
 <h4> Delivered SLOC/person-month: {{iteration.getdeliveredsloc}}</h4>
 
-{% endfor %}
-<h4> Phase Effort: {{inception_phase.getphaseeffort}} %</h4>
+<br>
 
+<h4> Total Defects injected: {{iteration.getdefectsinjected}}</h4>
+<h4> Total Defects removed: {{iteration.getdefectsremoved}}</h4>
+<br>
+<h4> Defect injection rate per development hour: {{iteration.getinjectionrate}}</h4>
+<h4> Defect removal rate per development hour: {{iteration.getremovalrate}}</h4>
+
+<br><br>
+{% endfor %}
+<h4> Phase percentage SLOC delivered: {{inception_phase.getphasepercentsloc}} %</h4>
+<h4> Phase Effort: {{inception_phase.getphaseeffort}} %</h4>
+<h4> Phase Delivered SLOC: {{inception_phase.getphasedeliveredsloc}}</h4>
+<br>
+<h4> Total Defects injected in Phase: {{inception_phase.getphasedefectsinjected}}</h4>
+<h4> Total Defects removed in Phase: {{inception_phase.getphasedefectsremoved}}</h4>
+<br>
+<h4> Defect injection rate per development hour: {{inception_phase.getinjectionrate}}</h4>
+<h4> Defect removal rate per development hour: {{inception_phase.getremovalrate}}</h4>
+
+<hr>
 
 <h3> Phase: Elaboration </h3>
 
 {% for iteration in elaboration %}
+<h3> iteration {{iteration.iternumber}} </h3>
 
 <h4> Percentage SLOC Delivered: {{iteration.getpercentsloc}} %</h4>
 <h4> Effort: {{iteration.geteffort}} %</h4>
 <h4> Delivered SLOC/person-month: {{iteration.getdeliveredsloc}}</h4>
 
+<br>
+
+<h4> Total Defects injected: {{iteration.getdefectsinjected}}</h4>
+<h4> Total Defects removed: {{iteration.getdefectsremoved}}</h4>
+<br>
+<h4> Defect injection rate per development hour: {{iteration.getinjectionrate}}</h4>
+<h4> Defect removal rate per development hour: {{iteration.getremovalrate}}</h4>
+
+<br><br>
 {% endfor %}
+
+<h4> Phase percentage SLOC delivered: {{elaboration_phase.getphasepercentsloc}} %</h4>
+<h4> Phase Effort: {{elaboration_phase.getphaseeffort}} %</h4>
+<h4> Phase Delivered SLOC: {{elaboration_phase.getphasedeliveredsloc}}</h4>
+<br>
+<h4> Total Defects injected in Phase: {{elaboration_phase.getphasedefectsinjected}}</h4>
+<h4> Total Defects removed in Phase: {{elaboration_phase.getphasedefectsremoved}}</h4>
+<br>
+<h4> Defect injection rate per development hour: {{elaboration_phase.getinjectionrate}}</h4>
+<h4> Defect removal rate per development hour: {{elaboration_phase.getremovalrate}}</h4>
+
+<hr>
 
 <h3> Phase: Construction </h3>
 
 {% for iteration in construction %}
+<h3> iteration {{iteration.iternumber}} </h3>
 
 <h4> Percentage SLOC Delivered: {{iteration.getpercentsloc}} %</h4>
 <h4> Effort: {{iteration.geteffort}} %</h4>
 <h4> Delivered SLOC/person-month: {{iteration.getdeliveredsloc}}</h4>
 
+<br>
+
+<h4> Total Defects injected: {{iteration.getdefectsinjected}}</h4>
+<h4> Total Defects removed: {{iteration.getdefectsremoved}}</h4>
+
+<br>
+<h4> Defect injection rate per development hour: {{iteration.getinjectionrate}}</h4>
+<h4> Defect removal rate per development hour: {{iteration.getremovalrate}}</h4>
+
+<br><br>
 {% endfor %}
+
+<h4> Phase percentage SLOC delivered: {{construction_phase.getphasepercentsloc}} %</h4>
+<h4> Phase Effort: {{construction_phase.getphaseeffort}} %</h4>
+<h4> Phase Delivered SLOC: {{construction_phase.getphasedeliveredsloc}}</h4>
+<br>
+<h4> Total Defects injected in Phase: {{construction_phase.getphasedefectsinjected}}</h4>
+<h4> Total Defects removed in Phase: {{construction_phase.getphasedefectsremoved}}</h4>
+<br>
+<h4> Defect injection rate per development hour: {{construction_phase.getinjectionrate}}</h4>
+<h4> Defect removal rate per development hour: {{construction_phase.getremovalrate}}</h4>
+
+<hr>
 
 <h3> Phase: Transition </h3>
 
 {% for iteration in transition %}
+<h3> iteration {{iteration.iternumber}} </h3>
 
 <h4> Percentage SLOC Delivered: {{iteration.getpercentsloc}} %</h4>
 <h4> Effort: {{iteration.geteffort}} %</h4>
 <h4> Delivered SLOC/person-month: {{iteration.getdeliveredsloc}}</h4>
 
+<br>
+
+<h4> Total Defects injected: {{iteration.getdefectsinjected}}</h4>
+<h4> Total Defects removed: {{iteration.getdefectsremoved}}</h4>
+<br>
+<h4> Defect injection rate per development hour: {{iteration.getinjectionrate}}</h4>
+<h4> Defect removal rate per development hour: {{iteration.getremovalrate}}</h4>
+
+<br><br>
 {% endfor %}
 
-{% endblock %}
+<h4> Phase percentage SLOC delivered: {{transition_phase.getphasepercentsloc}} %</h4>
+<h4> Phase Effort: {{transition_phase.getphaseeffort}} %</h4>
+<h4> Phase Delivered SLOC: {{transition_phase.getphasedeliveredsloc}}</h4>
+<br>
+<h4> Total Defects injected in Phase: {{transition_phase.getphasedefectsinjected}}</h4>
+<h4> Total Defects removed in Phase: {{transition_phase.getphasedefectsremoved}}</h4>
+<br>
+<h4> Defect injection rate per development hour: {{transition_phase.getinjectionrate}}</h4>
+<h4> Defect removal rate per development hour: {{transition_phase.getremovalrate}}</h4>
 
-{% block scripts %}
-
-<script>
-  function test(){
-    document.getElementById('mushu').innerHTML = document.getElementById('mushu').replace(/Hello/g, 'puchku');
-  }
-  function percentageOf(iteration_sloc, expected_sloc) {
-    return (iteration_sloc / expected_sloc) * 100;
-  }
-
-</script>
+<hr>
 
 {% endblock %}
