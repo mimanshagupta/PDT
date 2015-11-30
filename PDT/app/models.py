@@ -387,7 +387,6 @@ class DefectForm(forms.Form):
     resolved_by_DeveloperID = forms.IntegerField()
     defect_type = forms.ChoiceField(choices=DEFECT_CHOICES)
 
-
 class EditProjectForm(forms.Form):
     name = forms.CharField();
     phase = forms.IntegerField();
