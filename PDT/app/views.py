@@ -8,6 +8,10 @@ from django.template import RequestContext
 from datetime import datetime, timedelta
 from django.db.models import *
 from app.models import *
+from django.core.context_processors import csrf
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.contrib import messages
 
 def home(request):
     """Renders the home page."""
@@ -192,7 +196,7 @@ def projectdetail(request, pid):
             defect = Defect(description = form.cleaned_data['description'], resolved_by = form.cleaned_data['resolved_by'], removediter = form.cleaned_data['removediter'], defect_type = form.cleaned_data['defect_type'], removedphase = form.cleaned_data['removedphase'], injectedphase = form.cleaned_data['injectedphase'], injectediter = form.cleaned_data['injectediter'])
             defect.projectid = pid
             defect.save()
-            print(defect)
+            print(defect.description)
         return HttpResponseRedirect('/project/%s' %pid)
 
 def enditeration(request,iterid):
@@ -277,3 +281,80 @@ def defect_endtimer(request, iterid):
     iteration.defect_timecost += hour*3600 + minute*60 + sec
     iteration.save()
     return HttpResponseRedirect('/project/iteration/%s' % iterid)
+
+def defects(request, pid):
+    project = Project.objects.get(pk=pid)
+    defects = Defect.objects.filter(projectid=pid)
+
+    return render_to_response('app/defects.html',{'project':project, 'defects':defects},
+                              context_instance = RequestContext(request,
+        {
+            'title':'Viewdefects',
+            'year':datetime.now().year
+        }))
+
+def manager_login(request):
+	c = {}
+	c.update(csrf(request))
+	return render_to_response('app/manager_login.html', c)
+
+def developer_login(request):
+	c = {}
+	c.update(csrf(request))
+	return render_to_response('app/developer_login.html', c)
+
+def manager_auth_view(request):
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+        	request.session['_username'] = username
+        	return HttpResponseRedirect('/managerAC')
+    else:
+    	request.session['_error'] = "invalid username or password"
+    	return HttpResponseRedirect('/manager_loginFail')
+
+def developer_auth_view(request):
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+        	request.session['_username'] = username
+        	return HttpResponseRedirect('/developerAC')
+    else:
+    	request.session['_error'] = "invalid username or password"
+    	return HttpResponseRedirect('/developer_loginFail')
+
+def managerAC(request):
+	if request.session.has_key('_username'):
+		_username = request.session.get('_username')
+		if _username == "manager":
+			return HttpResponseRedirect('/manager')
+		else:
+			request.session['_error'] = "invalid username or password"
+			return HttpResponseRedirect('/manager_loginFail')
+
+def developerAC(request):
+	if request.session.has_key('_username'):
+		_username = request.session.get('_username')
+		if _username == "jackie":
+			workerid = 2
+			return HttpResponseRedirect('/developer/%s' % workerid)
+		if _username == "felix":
+			workerid = 1
+			return HttpResponseRedirect('/developer/%s' % workerid)
+		else:
+			request.session['_error'] = "invalid username or password"
+			return HttpResponseRedirect('/developer_loginFail')
+
+def manager_loginFail(request):
+	c = {'error':request.session.get('_error')}
+	c.update(csrf(request))
+	return render_to_response('app/manager_login.html', c)
+
+def developer_loginFail(request):
+	c = {'error':request.session.get('_error')}
+	c.update(csrf(request))
+	return render_to_response('app/developer_login.html', c)
