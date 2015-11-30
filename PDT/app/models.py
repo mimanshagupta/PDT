@@ -338,7 +338,8 @@ class Defect(models.Model):
 
     injectedphase = models.CharField('Phase Injected', choices=PHASE_CHOICES, max_length=200, null=True)
     removedphase = models.CharField('Phase Removed', choices=PHASE_CHOICES, max_length=200, null=True)
-    resolved_by = models.OneToOneField(Developer, null=True)
+    resolved_by = models.PositiveIntegerField(null=True)
+    byname = models.CharField(max_length=50, null=True)
     defect_type = models.CharField('Defect Type', choices=DEFECT_CHOICES, max_length=200, null=True)
 
 #Model Forms
@@ -357,13 +358,34 @@ class ItertimeForm(forms.Form):
     minutes = forms.IntegerField();
     seconds = forms.IntegerField();
 
+class DefecttimeForm(forms.Form):
+    hours = forms.IntegerField();
+    minutes = forms.IntegerField();
+    seconds = forms.IntegerField();
+
 class SLOCForm(forms.Form):
     sloc = forms.IntegerField();
 
-class DefectForm(forms.ModelForm):
-    class Meta:
-        model=Defect
-        fields = ['projectid', 'injectedphase', 'injectediter', 'removedphase', 'removediter','description', 'resolved_by', 'defect_type']
+class DefectForm(forms.Form):
+    DEFECT_CHOICES = (
+    ('requirement', 'requirement'),
+    ('design', 'design'),
+    ('implementation', 'implementation'),
+    ('badfix', 'badfix'),
+    )
+    PHASE_CHOICES = (
+    ('inception', 'inception'),
+    ('elaboration', 'elaboration'),
+    ('construction', 'construction'),
+    ('transition', 'transition'),
+    )
+    injectedphase =  forms.ChoiceField(choices=PHASE_CHOICES)
+    injectediter = forms.IntegerField()
+    removedphase = forms.ChoiceField(choices=PHASE_CHOICES)
+    removediter = forms.IntegerField()
+    description =  forms.CharField()
+    resolved_by_DeveloperID = forms.IntegerField()
+    defect_type = forms.ChoiceField(choices=DEFECT_CHOICES)
 
 class EditProjectForm(forms.Form):
     name = forms.CharField();

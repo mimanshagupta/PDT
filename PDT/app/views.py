@@ -109,7 +109,25 @@ def changetime(request, iterid):
             iteration.save()
         return HttpResponseRedirect('/manager/iteration/%s' %iterid)
 
-
+def dchangetime(request, iterid):
+    iteration = Iteration.objects.get(pk=iterid)
+    if request.method == 'GET':
+        form = DefecttimeForm()
+        return render_to_response('app/changetime.html',{'iteration': iteration, 'form': form},
+                              context_instance = RequestContext(request,
+        {
+            'title':'Iteration Change Defect Time',
+            'year':datetime.now().year
+        }))
+    elif request.method == 'POST':
+        form = DefecttimeForm(request.POST)
+        if form.is_valid():
+            hours = form.cleaned_data['hours']
+            minutes = form.cleaned_data['minutes']
+            seconds = form.cleaned_data['seconds']
+            iteration.defect_timecost = hours*3600 + minutes*60 + seconds
+            iteration.save()
+        return HttpResponseRedirect('/manager/iteration/%s' %iterid)
 
 def projectanalysis(request, pid):
     project = Project.objects.get(pk=pid)
@@ -203,6 +221,7 @@ def projectdetail(request, pid):
     elaboration = Iteration.objects.filter(projectid=pid,phrase='elaboration')
     construction = Iteration.objects.filter(projectid=pid,phrase='construction')
     transition = Iteration.objects.filter(projectid=pid,phrase='transition')
+    defects = Defect.objects.filter(projectid=pid)
     if request.method == 'GET':
         form = DefectForm()
         return render_to_response('app/projectdetail.html',{'form':form, 'project':project, 'inception':inception, 'elaboration':elaboration, 'construction':construction, 'transition':transition},
@@ -214,8 +233,9 @@ def projectdetail(request, pid):
     elif request.method == 'POST':
         form = DefectForm(request.POST)
         if form.is_valid():
-            defect = Defect(description = form.cleaned_data['description'], resolved_by = form.cleaned_data['resolved_by'], removediter = form.cleaned_data['removediter'], defect_type = form.cleaned_data['defect_type'], removedphase = form.cleaned_data['removedphase'], injectedphase = form.cleaned_data['injectedphase'], injectediter = form.cleaned_data['injectediter'])
-            defect.projectid = pid
+            defect = Defect(description = form.cleaned_data['description'], resolved_by = form.cleaned_data['resolved_by_DeveloperID'], removediter = form.cleaned_data['removediter'], defect_type = form.cleaned_data['defect_type'], removedphase = form.cleaned_data['removedphase'], injectedphase = form.cleaned_data['injectedphase'], injectediter = form.cleaned_data['injectediter'])
+            defect.projectid = project.pid
+            defect.byname = Developer.objects.get(pk=defect.resolved_by).name
             defect.save()
             print(defect.description)
         return HttpResponseRedirect('/project/%s' %pid)
