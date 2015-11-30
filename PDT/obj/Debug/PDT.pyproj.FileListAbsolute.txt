@@ -28,3 +28,4 @@ C:\Users\Felix Hui\Documents\GitHub\PDT\PDT\obj\Debug\deployment-updated-pyvenv.
 C:\Users\Felix Hui\Documents\GitHub\PDT\PDT\ptvs_virtualenv_proxy.py
 C:\Users\Felix Hui\Documents\GitHub\PDT\PDT\obj\Debug\web.config
 C:\Users\Felix Hui\Documents\GitHub\PDT\PDT\obj\Debug\web.debug.config
+C:\Users\Felix Hui\Documents\GitHub\PDT\PDT\obj\Debug\deployment-updated-orig-prefix.txt

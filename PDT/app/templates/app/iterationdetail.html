@@ -8,7 +8,7 @@ Phrase: {{itr.phrase}} <br>
 Time cost: {{itr.timecost}} <br>
 Last access: {{itr.lastend}} <br>
 SLOC: {{itr.sloc}}<br>
-
+<a class="btn btn-warning" href="/manager/iteration/timer/{{itr.iterid}}">Change Time Manually</a>
 <p>&nbsp;</p>
 {% if itr.status == True %}
     <form method="post">

@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     url(r'^manager/create$', 'app.views.createproject', name='createproject'),
     url(r'^manager/iteration/create/(?P<pid>\d+)$', 'app.views.createiteration', name='createiteration'),
     url(r'^manager/iteration/(?P<iterid>\d+)$', 'app.views.itrdetail', name='itrdetail'),
+    url(r'^manager/iteration/timer/(?P<iterid>\d+)$', 'app.views.changetime', name='changetime'),
     #developer pages
     url(r'^developers$','app.views.developers', name='developers'),
     url(r'^developer/(?P<workerid>\d+)$', 'app.views.developerhome', name='developerhome'),

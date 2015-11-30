@@ -1,0 +1,18 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>Iteration - Change time manually</h2>
+
+<p>&nbsp;</p>
+    <form method="post">
+        {% csrf_token %}
+        Change Time Cost: {{form.hours}}hours {{form.minutes}}minutes {{form.seconds}}seconds 
+        <button type="submit">Save</button>
+    </form>
+
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+   <a class="btn btn-default" href="/manager/iteration/{{iteration.iterid}}">Back</a>
+{% endblock %}

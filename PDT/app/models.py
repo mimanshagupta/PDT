@@ -32,10 +32,30 @@ class Project(models.Model):
         ])
     iterations = models.IntegerField(default=0)
     expectedsloc = models.IntegerField(default=0)
-    expectedduration = models.IntegerField(default=0)
-    defaultyield = models.IntegerField(default = 80)
+    expectedduration = models.IntegerField(default=1)
     totaltime = models.PositiveIntegerField(default=0)
     totalsloc = models.PositiveIntegerField(default=0)
+
+    def gethour(self):
+        iterations = Iteration.objects.filter(projectid=self.pid)
+        timesum = 0
+        for iteration in iterations:
+            timesum += iteration.timecost
+        return int(timesum/3600)
+
+    def getmin(self):
+        iterations = Iteration.objects.filter(projectid=self.pid)
+        timesum = 0
+        for iteration in iterations:
+            timesum += iteration.timecost
+        return int((timesum - int(timesum/3600)*3600)/60)
+
+    def getsec(self):
+        iterations = Iteration.objects.filter(projectid=self.pid)
+        timesum = 0
+        for iteration in iterations:
+            timesum += iteration.timecost
+        return int(timesum - int(timesum/3600)*3600 - int((timesum - int(timesum/3600)*3600)/60)*60)
 
     def getprojectpercentsloc(self):
         iteration = Iteration.objects.filter(projectid=self.pid).latest('iterid')
@@ -330,6 +350,11 @@ class IterationForm(forms.ModelForm):
     class Meta:
         model = Iteration
         fields = ['phrase','iternumber','projectid']
+
+class ItertimeForm(forms.Form):
+    hours = forms.IntegerField();
+    minutes = forms.IntegerField();
+    seconds = forms.IntegerField();
 
 class SLOCForm(forms.Form):
     sloc = forms.IntegerField();

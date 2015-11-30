@@ -89,6 +89,27 @@ def itrdetail(request, iterid):
             itr.save()
         return HttpResponseRedirect('/project/analysis/%s' %itr.projectid)
 
+def changetime(request, iterid):
+    iteration = Iteration.objects.get(pk=iterid)
+    if request.method == 'GET':
+        form = ItertimeForm()
+        return render_to_response('app/changetime.html',{'iteration': iteration, 'form': form},
+                              context_instance = RequestContext(request,
+        {
+            'title':'Iteration Change Time',
+            'year':datetime.now().year
+        }))
+    elif request.method == 'POST':
+        form = ItertimeForm(request.POST)
+        if form.is_valid():
+            hours = form.cleaned_data['hours']
+            minutes = form.cleaned_data['minutes']
+            seconds = form.cleaned_data['seconds']
+            iteration.timecost = hours*3600 + minutes*60 + seconds
+            iteration.save()
+        return HttpResponseRedirect('/manager/iteration/%s' %iterid)
+
+
 
 def projectanalysis(request, pid):
     project = Project.objects.get(pk=pid)
@@ -118,10 +139,10 @@ def metrics(request, pid):
     slocsum = Iteration.objects.filter(projectid = pid).aggregate(Sum("sloc"))
     expectedsloc = project.expectedsloc
 
-    inception_phase = Phase.objects.get(projectid=pid,phase_name='inception')
-    elaboration_phase = Phase.objects.get(projectid=pid,phase_name='elaboration')
-    construction_phase = Phase.objects.get(projectid=pid,phase_name='construction')
-    transition_phase = Phase.objects.get(projectid=pid,phase_name='transition')
+    inception_phase = Phase.objects.filter(projectid=pid,phase_name='inception')
+    elaboration_phase = Phase.objects.filter(projectid=pid,phase_name='elaboration')
+    construction_phase = Phase.objects.filter(projectid=pid,phase_name='construction')
+    transition_phase = Phase.objects.filter(projectid=pid,phase_name='transition')
 
     inception = Iteration.objects.filter(projectid=pid,phrase='inception')
     elaboration = Iteration.objects.filter(projectid=pid,phrase='elaboration')
