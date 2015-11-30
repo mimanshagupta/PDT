@@ -8,6 +8,10 @@ from django.template import RequestContext
 from datetime import datetime, timedelta
 from django.db.models import *
 from app.models import *
+from django.core.context_processors import csrf
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
+from django.contrib import messages
 
 def home(request):
     """Renders the home page."""
@@ -105,7 +109,25 @@ def changetime(request, iterid):
             iteration.save()
         return HttpResponseRedirect('/manager/iteration/%s' %iterid)
 
-
+def dchangetime(request, iterid):
+    iteration = Iteration.objects.get(pk=iterid)
+    if request.method == 'GET':
+        form = DefecttimeForm()
+        return render_to_response('app/changetime.html',{'iteration': iteration, 'form': form},
+                              context_instance = RequestContext(request,
+        {
+            'title':'Iteration Change Defect Time',
+            'year':datetime.now().year
+        }))
+    elif request.method == 'POST':
+        form = DefecttimeForm(request.POST)
+        if form.is_valid():
+            hours = form.cleaned_data['hours']
+            minutes = form.cleaned_data['minutes']
+            seconds = form.cleaned_data['seconds']
+            iteration.defect_timecost = hours*3600 + minutes*60 + seconds
+            iteration.save()
+        return HttpResponseRedirect('/manager/iteration/%s' %iterid)
 
 def projectanalysis(request, pid):
     project = Project.objects.get(pk=pid)
@@ -199,6 +221,7 @@ def projectdetail(request, pid):
     elaboration = Iteration.objects.filter(projectid=pid,phrase='elaboration')
     construction = Iteration.objects.filter(projectid=pid,phrase='construction')
     transition = Iteration.objects.filter(projectid=pid,phrase='transition')
+    defects = Defect.objects.filter(projectid=pid)
     if request.method == 'GET':
         form = DefectForm()
         return render_to_response('app/projectdetail.html',{'form':form, 'project':project, 'inception':inception, 'elaboration':elaboration, 'construction':construction, 'transition':transition},
@@ -210,10 +233,11 @@ def projectdetail(request, pid):
     elif request.method == 'POST':
         form = DefectForm(request.POST)
         if form.is_valid():
-            defect = Defect(description = form.cleaned_data['description'], resolved_by = form.cleaned_data['resolved_by'], removediter = form.cleaned_data['removediter'], defect_type = form.cleaned_data['defect_type'], removedphase = form.cleaned_data['removedphase'], injectedphase = form.cleaned_data['injectedphase'], injectediter = form.cleaned_data['injectediter'])
-            defect.projectid = pid
+            defect = Defect(description = form.cleaned_data['description'], resolved_by = form.cleaned_data['resolved_by_DeveloperID'], removediter = form.cleaned_data['removediter'], defect_type = form.cleaned_data['defect_type'], removedphase = form.cleaned_data['removedphase'], injectedphase = form.cleaned_data['injectedphase'], injectediter = form.cleaned_data['injectediter'])
+            defect.projectid = project.pid
+            defect.byname = Developer.objects.get(pk=defect.resolved_by).name
             defect.save()
-            print(defect)
+            print(defect.description)
         return HttpResponseRedirect('/project/%s' %pid)
 
 def enditeration(request,iterid):
@@ -298,3 +322,80 @@ def defect_endtimer(request, iterid):
     iteration.defect_timecost += hour*3600 + minute*60 + sec
     iteration.save()
     return HttpResponseRedirect('/project/iteration/%s' % iterid)
+
+def defects(request, pid):
+    project = Project.objects.get(pk=pid)
+    defects = Defect.objects.filter(projectid=pid)
+
+    return render_to_response('app/defects.html',{'project':project, 'defects':defects},
+                              context_instance = RequestContext(request,
+        {
+            'title':'Viewdefects',
+            'year':datetime.now().year
+        }))
+
+def manager_login(request):
+	c = {}
+	c.update(csrf(request))
+	return render_to_response('app/manager_login.html', c)
+
+def developer_login(request):
+	c = {}
+	c.update(csrf(request))
+	return render_to_response('app/developer_login.html', c)
+
+def manager_auth_view(request):
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+        	request.session['_username'] = username
+        	return HttpResponseRedirect('/managerAC')
+    else:
+    	request.session['_error'] = "invalid username or password"
+    	return HttpResponseRedirect('/manager_loginFail')
+
+def developer_auth_view(request):
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        if user.is_active:
+        	request.session['_username'] = username
+        	return HttpResponseRedirect('/developerAC')
+    else:
+    	request.session['_error'] = "invalid username or password"
+    	return HttpResponseRedirect('/developer_loginFail')
+
+def managerAC(request):
+	if request.session.has_key('_username'):
+		_username = request.session.get('_username')
+		if _username == "manager":
+			return HttpResponseRedirect('/manager')
+		else:
+			request.session['_error'] = "invalid username or password"
+			return HttpResponseRedirect('/manager_loginFail')
+
+def developerAC(request):
+	if request.session.has_key('_username'):
+		_username = request.session.get('_username')
+		if _username == "jackie":
+			workerid = 2
+			return HttpResponseRedirect('/developer/%s' % workerid)
+		if _username == "felix":
+			workerid = 1
+			return HttpResponseRedirect('/developer/%s' % workerid)
+		else:
+			request.session['_error'] = "invalid username or password"
+			return HttpResponseRedirect('/developer_loginFail')
+
+def manager_loginFail(request):
+	c = {'error':request.session.get('_error')}
+	c.update(csrf(request))
+	return render_to_response('app/manager_login.html', c)
+
+def developer_loginFail(request):
+	c = {'error':request.session.get('_error')}
+	c.update(csrf(request))
+	return render_to_response('app/developer_login.html', c)

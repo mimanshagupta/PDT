@@ -1,0 +1,23 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>View Defects for Project {{project.name}}</h2>
+
+{% for defect in defects %}
+  <b>Description :</b> {{defect.description}}
+  <br>
+  <b>Injected in</b> : {{defect.injectedphase}} : Iteration {{defect.injectediter}}
+  <br>
+  <b>Removed in :</b>  {{defect.removedphase}} : Iteration {{defect.removediter}}
+  <br>
+  <b>Removed By :</b> {{defect.byname}}
+  <br>
+  <b>Type :</b> {{defect.defect_type}}
+  <br>
+
+  <p>&nbsp;</p>
+
+{% endfor %}
+
+{% endblock %}
