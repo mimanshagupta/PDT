@@ -32,6 +32,7 @@ class Project(models.Model):
         ])
     iterations = models.IntegerField(default=0)
     expectedsloc = models.IntegerField(default=0)
+    defaultyield = models.PositiveIntegerField(default = 80)
     expectedduration = models.IntegerField(default=1)
     totaltime = models.PositiveIntegerField(default=0)
     totalsloc = models.PositiveIntegerField(default=0)
